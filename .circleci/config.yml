@@ -54,7 +54,8 @@ jobs:
           # * Configure Google Kuberneters Engine (GKE) cluster
           name: Configure GKE
           command: |
-              gcloud container clusters get-credentials $GKE_CLUSTER --region $GOOGLE_COMPUTE_REGION --project $GOOGLE_PROJECT_ID
+              GKE_REGION="${GKE_REGION:-us-central1}"
+              gcloud container clusters get-credentials "$GKE_CLUSTER" --region "$GKE_REGION" --project "$GOOGLE_PROJECT_ID"
       - run:
           name: Deploy to GKE
           command: |
@@ -71,7 +72,6 @@ workflows:
       - deploy_to_gke:
           requires:
             - build_docker_image
-
 
 
 
