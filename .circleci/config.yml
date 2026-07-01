@@ -53,6 +53,7 @@ jobs:
       - run:
           # * Configure Google Kuberneters Engine (GKE) cluster
           name: Configure GKE
+              # * `GKE_REGION`: We can  set this as an environment variable in CircleCI project settings
           command: |
               GKE_REGION="${GKE_REGION:-us-central1}"
               gcloud container clusters get-credentials "$GKE_CLUSTER" --region "$GKE_REGION" --project "$GOOGLE_PROJECT_ID"
