@@ -10,12 +10,19 @@ jobs:
   checkout_code:
     executor: docker-executor
     steps:
-      - checkout # this will be make an connection between the CircleCI and the GitHub repository 
+      - checkout # this will be make an connection between the CircleCI and the GitHub repository
 
   build_docker_image: # Authentification  on GCP registry
     executor: docker-executor
     steps:
       - checkout
+      - run:
+          name: Install Docker CLI
+          command: |
+              if ! command -v docker >/dev/null 2>&1; then
+                apt-get update
+                apt-get install -y docker.io
+              fi
       - setup_remote_docker
       - run:
           name: Authenticate with google cloud
@@ -42,7 +49,7 @@ jobs:
               echo "$GCLOUD_SERVICE_KEY" | base64 --decode > GCP-Key.json
               gcloud --quiet auth activate-service-account --key-file=GCP-Key.json
               gcloud --quiet auth configure-docker us-central1-docker.pkg.dev
-      
+
       - run:
           # * Configure Google Kuberneters Engine (GKE) cluster
           name: Configure GKE
@@ -65,7 +72,7 @@ workflows:
           requires:
             - build_docker_image
 
-    
+
 
 
 
