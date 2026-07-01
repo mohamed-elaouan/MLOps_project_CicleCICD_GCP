@@ -1,0 +1,16 @@
+.git
+.circleci
+.pytest_cache
+__pycache__
+*.py[cod]
+*.pyo
+
+All_couse_material
+notebook
+
+artifacts/processed
+artifacts/raw
+artifacts/models/confusion_matrix.png
+
+.env
+GCP-Key.json

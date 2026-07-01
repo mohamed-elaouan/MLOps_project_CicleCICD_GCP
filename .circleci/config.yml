@@ -21,14 +21,14 @@ jobs:
           name: Authenticate with google cloud
           command: |
               echo "$GCLOUD_SERVICE_KEY" | base64 --decode > GCP-Key.json
-              gcloud auth activate-service-account --key-file=GCP-Key.json
-              gcloud auth configure-docker us-central1-docker.pkg.dev || gcloud auth configure-docker
+              gcloud --quiet auth activate-service-account --key-file=GCP-Key.json
+              gcloud --quiet auth configure-docker us-central1-docker.pkg.dev
 
       - run:
           name: Build and Push Image
           command: |
-              docker build -t us-central1-docker.pkg.dev/learningprojects-486111/mlops-project-iris/mlops-project-iris:latest .
-              docker push us-central1-docker.pkg.dev/learningprojects-486111/mlops-project-iris/mlops-project-iris:latest
+              docker build -t us-central1-docker.pkg.dev/$GOOGLE_PROJECT_ID/mlops-project-iris/mlops-project-iris:latest .
+              docker push us-central1-docker.pkg.dev/$GOOGLE_PROJECT_ID/mlops-project-iris/mlops-project-iris:latest
 
   deploy_to_gke:
     executor: docker-executor
@@ -40,8 +40,8 @@ jobs:
           name: Authenticate with google cloud
           command: |
               echo "$GCLOUD_SERVICE_KEY" | base64 --decode > GCP-Key.json
-              gcloud auth activate-service-account --key-file=GCP-Key.json
-              gcloud auth configure-docker us-central1-docker.pkg.dev || gcloud auth configure-docker
+              gcloud --quiet auth activate-service-account --key-file=GCP-Key.json
+              gcloud --quiet auth configure-docker us-central1-docker.pkg.dev
       
       - run:
           # * Configure Google Kuberneters Engine (GKE) cluster
